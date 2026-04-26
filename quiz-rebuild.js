@@ -137,7 +137,6 @@ function checkAnswer() {
         feedback.textContent = `Wrong! The correct answer is ${correctAnswer}!`;
     }
 
-currentIndex++;
 
 setTimeout(() => {
     if (currentIndex < currentQuestions.length) {
@@ -146,6 +145,8 @@ setTimeout(() => {
         showResults();
     }
     }, 1500);
+    
+currentIndex++;
 }
 
 function showResults() {
@@ -195,5 +196,17 @@ function showLeaderboard() {
         item.textContent = `${entry.name} - ${entry.score}/${entry.total}`;
         list.appendChild(item);
     });
+
+}
+
+function playAgain() {
+    score = 0;
+    currentIndex = 0;
+    currentQuestions = [];
+    currentTopic = "";
+    currentSubtopic = "";
+
+    document.querySelector("button[onclick='saveScore()'").disabled = false;
+    showScreen("topic-screen");
 
 }
