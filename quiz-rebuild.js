@@ -102,6 +102,7 @@ async function showScreen(screenId) {
 // ============= VALIDATION=====================
 function validateCredentials() {
     const button = document.querySelector("button[onclick='validateCredentials()']");
+    button.disabled = true;
     const nameInput = document.querySelector("#username-input").value.trim();
     const ageInput = document.querySelector("#age-input").value.trim();
     const errorBox = document.querySelector("#welcome-error");
