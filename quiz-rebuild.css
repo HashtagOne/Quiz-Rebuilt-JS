@@ -8,7 +8,7 @@
 
 /* OVERALL*/
 #app {
-    max-width: 600px;
+    max-width: 800px;
     min-height: 100vh;
     padding: 40px 20px;
     margin: 0 auto;
@@ -22,7 +22,6 @@ body {
 
 /* WELCOME - SCREEN */
 #welcome-screen {
-    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -39,6 +38,125 @@ body {
 #topic-screen h2 {
     margin-bottom: 8px;
 }
+
+/* SUBTOPIC - SCREEN */
+#subtopic-screen {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+#subtopic-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    width: 100%
+}
+
+
+/* QUIZ - SCREEN */
+#quiz-screen {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+#progress {
+    font-size: 0.9rem;
+    color: #888;
+    align-self: flex-start;
+}
+
+#question-text {
+    font-size: 1.4rem;
+    font-weight: 600;
+    text-align: left;
+    align-self: flex-start;
+    width: 100%;
+    white-space: normal;
+    max-width: 2000px;
+    word-break: normal;
+    overflow-wrap: break-word;
+}
+
+.answer-row {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.answer-row input {
+    flex: 1;
+}
+
+.answer-row button {
+    flex-shrink: 0;
+}
+
+#answer-input {
+    padding: 8px;
+}
+
+#feedback {
+    align-self: flex-start;
+    font-size: 0.9rem;
+    min-height: 20px;
+}
+
+/* RESULTS - SCREEN */
+
+#results-screen {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+#results-screen h2, #final-score, #score-message {
+    text-align: center;
+}
+
+#leaderboard {
+    width: 100%;
+    max-width: 500px;
+    background-color: 500px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 16px 0;
+    box-shadow: 4px 8px 6px rgba(0,0,0,0.2);
+}
+
+#leaderboard h3 {
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 1.2rem;
+}
+
+#leaderboard-list {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+#leaderboard-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(0,0,0, 0.05);
+}
+
+.results-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 500px;
+}
+
 
 /* GENERAL */
 h1 {
@@ -114,8 +232,6 @@ button:active {
 
 .bounce-letter {
     display: inline-block;
-    transition: transform 0.8s ease;
-    transform: translateY(0);
 }
 
 .bounce-letter:hover {
@@ -123,6 +239,15 @@ button:active {
     transition: transform 0.2s ease;
 }
 
+.hover-ready {
+    display: inline-block;
+    transition: transform 0.8s ease;
+}
+
+.hover-ready:hover {
+    transform: translateY(-12px);
+    transition: transform 0.2s ease;
+}
 
 
 @keyframes fadeInUp {

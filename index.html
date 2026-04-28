@@ -42,7 +42,6 @@
 
     <div id = "subtopic-screen">
         <h2>Now choose a subtopic:</h2>
-
         <div id ="subtopic-buttons">
         </div>
     </div>
@@ -66,16 +65,19 @@
 
         <p id="score-message"></p>
 
-        <button onclick = "saveScore()">Save Score</button>
-
         <div id="leaderboard">
             <h3>Leaderboard</h3>
             <ol id="leaderboard-list"></ol>
         </div>
-
-        <button onclick="playAgain()">Play Again</button>
+        <div class = "results-buttons">
+            <button onclick="saveScore()">Save Score</button>
+            <button onclick="playAgain()">Play Again</button>
+        </div>
+        
+    
 
     </div>
+
 </div>
 
     <script src = "quiz-rebuild.js"></script>

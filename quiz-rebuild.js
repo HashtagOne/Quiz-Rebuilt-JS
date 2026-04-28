@@ -47,10 +47,7 @@ async function showScreen(screenId) {
     const currentScreen = currentScreenId
         ? document.querySelector("#" + currentScreenId)
         : null;
-    console.log("BEFORE update - currentScreenId:", currentScreenId);
-    console.log("currentScreen element:", currentScreen);
     currentScreenId = screenId;
-    console.log("AFTER update - currentScreenId:", currentScreenId);
 
     if (currentScreen) {
         console.log("entering fadeout");
@@ -80,10 +77,26 @@ async function showScreen(screenId) {
         child.classList.add("fade-in-down");
     }
 
-    await sleep(newChildren.length * 120 + 500);
+    await sleep(newChildren.length * 120 + 300);
     newChildren.forEach(child => child.classList.remove("fade-in-down"));
-} 
 
+    const dynamicButtons = Array.from(document.querySelectorAll("#subtopic-buttons button"));
+    if (dynamicButtons.length > 0) {
+        dynamicButtons.forEach(btn => btn.style.opacity = "0");
+        
+       for (const [index, btn] of dynamicButtons.entries()) {
+        await sleep(index * 120);
+        btn.style.opacity = "";
+        btn.classList.add("fade-in-down");
+        await sleep(500);
+        btn.classList.remove("fade-in-down");
+       }
+    }
+    await sleep(newChildren.length * 120 + 150);
+    newChildren.forEach(child => child.classList.remove("fade-in-down"));
+
+
+}
 
 
 // ============= VALIDATION=====================
@@ -131,6 +144,7 @@ function selectTopic(topic) {
         const button = document.createElement("button");
         button.textContent = subtopic;
         button.onclick = () => selectSubtopic(subtopic);
+        button.style.opacity = "0";
         subtopicButtons.appendChild(button);
     });
     showScreen("subtopic-screen");
@@ -146,14 +160,6 @@ function selectSubtopic(subtopic) {
 }
 
 // =============== QUIZ LOGIC ==================
-function displayQuestion() {
-    const current = currentQuestions[currentIndex];
-    
-    document.querySelector("#question-text").textContent = current.question;
-    document.querySelector("#progress").textContent = `Question ${currentIndex + 1 } of ${currentQuestions.length}`;
-    document.querySelector("#answer-input").value = "";
-    document.querySelector("#feedback").textContent = "";
-}
 function checkAnswer() {
     const userAnswer = document.querySelector("#answer-input").value.trim().toLowerCase();
     const correctAnswer = currentQuestions[currentIndex].answer.toLowerCase();
@@ -310,3 +316,26 @@ document.addEventListener("DOMContentLoaded", () => {
     showScreen("welcome-screen");
 })
 
+function addHoverEffect(selector) {
+    const heading = document.querySelector(selector);
+    if (!heading) return;
+
+    const letters = heading.textContent.split("");
+    heading.textContent = "";
+
+    letters.forEach(letter => {
+        const span = document.createElement("span");
+        span.textContent = letter === " " ? "\u00A0" : letter;
+        span.classList.add("hover-ready");
+        heading.appendChild(span);
+    });
+}
+function displayQuestion() {
+    const current = currentQuestions[currentIndex];
+    document.querySelector("#question-text").textContent = current.question;
+    addHoverEffect("#question-text");
+
+    document.querySelector("#progress").textContent = `Question ${currentIndex + 1} of ${currentQuestions.length}`;
+    document.querySelector("#answer-input").value = "";
+    document.querySelector("#feedback").textContent = "";
+}
