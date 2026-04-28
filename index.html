@@ -4,19 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz App</title>
-    <link rel = "stylesheet" href = "quiz-rebuild.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel = "stylesheet" href = "quiz-rebuild.css">
+
 </head>
 <body>
     
+<div id="app">
     <div id = "welcome-screen">
         <h1>Hello, Welcome to the Quiz!</h1>
 
-
+        <div class = "input-group">
         <label>First off, what's your name?</label>
         <input type ="text" id = "username-input">
+        </div>
 
+        <div class = "input-group">
         <label>How old are you?</label>
         <input type="number" id = "age-input">
+        </div>
 
         <button onclick ="validateCredentials()">Start Quiz</button>
 
@@ -67,7 +76,7 @@
         <button onclick="playAgain()">Play Again</button>
 
     </div>
-
+</div>
 
     <script src = "quiz-rebuild.js"></script>
 </body>

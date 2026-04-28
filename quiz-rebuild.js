@@ -1,3 +1,11 @@
+// ================= VARIABLES ======================
+let currentTopic = ""
+let currentSubtopic = ""
+let currentQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let username = "";
+let currentScreenId = "";
 // ================= DATA ============================
 const quizData = {
     Science: {
@@ -33,22 +41,48 @@ const quizData = {
     }
 };
 
-// ================= VARIABLES ======================
-let currentTopic = ""
-let currentSubtopic = ""
-let currentQuestions = [];
-let currentIndex = 0;
-let score = 0;
-let username = "";
-
 
 // ============= SCREEN CONTROL ================
-function showScreen(screenId) {
-    const screens = document.querySelectorAll("div[id$='-screen']");
-    screens.forEach(screen => screen.style.display = "none");
-    document.querySelector("#" + screenId).style.display = "block";
-}
-showScreen("welcome-screen");
+async function showScreen(screenId) {
+    const currentScreen = currentScreenId
+        ? document.querySelector("#" + currentScreenId)
+        : null;
+    console.log("BEFORE update - currentScreenId:", currentScreenId);
+    console.log("currentScreen element:", currentScreen);
+    currentScreenId = screenId;
+    console.log("AFTER update - currentScreenId:", currentScreenId);
+
+    if (currentScreen) {
+        console.log("entering fadeout");
+        const children = Array.from(currentScreen.children);
+
+        for (const [index, child] of children.entries()) {
+            await sleep(index * 120);
+            child.classList.add("fade-out-up");
+        }
+
+        await sleep(children.length * 120 + 400);
+        currentScreen.style.display = "none";
+        children.forEach(child => child.classList.remove("fade-out-up"));
+        
+        await sleep(200);
+    }
+
+    const newScreen = document.querySelector("#" + screenId);
+    newScreen.style.display = "flex";
+
+    const newChildren = Array.from(newScreen.children);
+    newChildren.forEach(child => child.style.opacity = "0");
+
+    for (const [index, child] of newChildren.entries()) {
+        await sleep(index * 120);
+        child.style.opacity = "";
+        child.classList.add("fade-in-down");
+    }
+
+    await sleep(newChildren.length * 120 + 500);
+    newChildren.forEach(child => child.classList.remove("fade-in-down"));
+} 
 
 
 
@@ -60,25 +94,25 @@ function validateCredentials() {
     const responseBox = document.querySelector("#welcome-response");
 
     if (!nameInput || !/^[a-zA-Z]+$/.test(nameInput)) {
-        errorBox.textContent = "Please enter a valid name (letters only).";
+        animateText(errorBox, "Please enter a valid name (letters only).")
         return;
     }
 
     if (!ageInput || parseInt(ageInput) <9) {
-        errorBox.textContent = "You must be atleast 9 years old to play.";
+       animateText(errorBox, "You must be atleast 9 years old to play.")
         return;
     }
 
      errorBox.textContent = "";
     username = nameInput.trim()[0].toUpperCase() + nameInput.trim().slice(1).toLowerCase();
-    responseBox.textContent = `Nice name, ${username}!`;
+    animateText(responseBox,`Nice name, ${username}!`);
 
 setTimeout(() => {
-    responseBox.textContent = `Anyways, it seems you are ${ageInput} years old. That's a pretty good age!`;
+     animateText(responseBox,`Anyways, it seems you are ${ageInput} years old. That's a pretty good age!`);
 }, 2000);
 
 setTimeout(() => {
-    responseBox.textContent = "Let us start, shall we?";
+    animateText(responseBox, "Let us start, shall we?");
 }, 4000);
 
 setTimeout(() => {
@@ -149,6 +183,20 @@ setTimeout(() => {
 currentIndex++;
 }
 
+function playAgain() {
+    score = 0;
+    currentIndex = 0;
+    currentQuestions = [];
+    currentTopic = "";
+    currentSubtopic = "";
+
+    document.querySelector("button[onclick='saveScore()'").disabled = false;
+    showScreen("topic-screen");
+
+}
+
+
+// ===================== LEADERBOARD =============================
 function showResults() {
     const total = currentQuestions.length;
     const finalScore = document.querySelector("#final-score");
@@ -199,14 +247,66 @@ function showLeaderboard() {
 
 }
 
-function playAgain() {
-    score = 0;
-    currentIndex = 0;
-    currentQuestions = [];
-    currentTopic = "";
-    currentSubtopic = "";
-
-    document.querySelector("button[onclick='saveScore()'").disabled = false;
-    showScreen("topic-screen");
-
+// =============== ANIMATION ============================
+function animateText(element, text) {
+    element.textContent = text;
+    element.classList.remove("fade-in-up");
+    void element.offsetWidth;
+    element.classList.add("fade-in-up");
 }
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+function animateHeading() {
+    const h1 = document.querySelector("h1");
+    const letters = h1.textContent.split("");
+    h1.textContent = "";
+    const spans = [];
+
+   letters.forEach((letter, index) => {
+    const span = document.createElement("span");
+    span.textContent = letter === " " ? "\u00A0" : letter;
+    span.classList.add("bounce-letter");
+    span.style.animationName = "dropIn";
+    span.style.animationDuration = "1s";
+    span.style.animationTimingFunction = "ease";
+    span.style.animationFillMode = "both";
+    span.style.animationDelay = `${index * 0.08}s`;
+    h1.appendChild(span);
+    spans.push(span);
+    });
+    
+    const lastSpan = spans[spans.length - 1];
+    lastSpan.addEventListener("animationend", (e) => {
+        console.log("animation ended:", e.animationName);
+     wave(spans);
+    });
+}
+
+async function wave(spans) {
+    for (const [index, span] of spans.entries()) {
+        if (span.textContent === "\u00A0") {
+            continue;
+        }
+        await sleep (index * 0.001);
+        span.style.animation = "none";
+        span.style.transition = "transform 0.3s ease";
+        span.style.transform = "translateY(-12px)";
+        await sleep(150);
+        span.style.transition = "transform 1s ease";
+        span.style.transform = "translateY(0)";
+    }
+    await sleep(200);
+    spans.forEach(s => {
+        s.style.transform = "";
+        s.style.transition = "";
+        s.classList.add("hover-ready");
+    });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    animateHeading();
+    showScreen("welcome-screen");
+})
+
