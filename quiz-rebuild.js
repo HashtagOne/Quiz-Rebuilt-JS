@@ -101,6 +101,7 @@ async function showScreen(screenId) {
 
 // ============= VALIDATION=====================
 function validateCredentials() {
+    const button = document.querySelector("button[onclick='validateCredentials()']");
     const nameInput = document.querySelector("#username-input").value.trim();
     const ageInput = document.querySelector("#age-input").value.trim();
     const errorBox = document.querySelector("#welcome-error");
@@ -108,11 +109,13 @@ function validateCredentials() {
 
     if (!nameInput || !/^[a-zA-Z]+$/.test(nameInput)) {
         animateText(errorBox, "Please enter a valid name (letters only).")
+        button.disabled = false;
         return;
     }
 
     if (!ageInput || parseInt(ageInput) <9) {
        animateText(errorBox, "You must be atleast 9 years old to play.")
+       button.disabled = false;
         return;
     }
 
